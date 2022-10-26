@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Bus Ticketing System Backend",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node src/app.js"
+  },
+  "author": "Dr-Developers",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/node": "^7.19.1",
+    "@babel/preset-env": "^7.19.4"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
