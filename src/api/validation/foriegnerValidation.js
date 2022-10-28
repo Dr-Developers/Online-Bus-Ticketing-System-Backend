@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const user_validation = (data) => {
+const foriegner_validation = (data) => {
     const schema_validation = Joi.object({
         userID: Joi.string.required(),
         name: Joi.string.required(),
@@ -16,4 +16,4 @@ const user_validation = (data) => {
     return schema_validation.validate(data);
 };
 
-module.exports.user_validation = user_validation;
+module.exports.foriegner_validation = foriegner_validation;
