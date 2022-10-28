@@ -1,11 +1,11 @@
 const router = require("express").Router();
 const {
-    addPayment,
-    getPayment,
-    updatePayment,
-    deletePayment,
-    getonePayment,
-} = require("../controller/paymentController");
+	addPayment,
+	getPayment,
+	updatePayment,
+	deletePayment,
+	getonePayment,
+} = require("../controller/paymentC");
 const Event = require("../models/paymentM");
 
 //define user routes

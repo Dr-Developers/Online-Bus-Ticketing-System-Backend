@@ -6,7 +6,9 @@ const cors = require("cors");
 // importing route files
 const userRoute = require("./api/routes/userR");
 const paymentRoute = require("./api/routes/paymentR");
-const busRoutesRoute  = require("./api/routes/busRoutsR");
+const busRoutesRoute = require("./api/routes/busRoutsR");
+const authRoutes = require("./api/routes/authR");
+const foreignerRoute = require("./api/routes/foreignerR");
 
 const app = express();
 dotenv.config();
@@ -28,6 +30,8 @@ app.use(express.json());
 app.use("/api/user", userRoute);
 app.use("/api/payment", paymentRoute);
 app.use("/api/busroutes", busRoutesRoute);
+app.use("/api", authRoutes);
+app.use("/api/foreigner", foreignerRoute);
 
 // Creating the port connection of the Backend Server
 app.listen(process.env.PORT || 5000, () => {
