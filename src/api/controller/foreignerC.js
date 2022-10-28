@@ -1,31 +1,31 @@
 // noinspection UnreachableCodeJS
 
 const CryptoJS = require("crypto-js");
-const User = require("../models/userM");
-const { user_validation } = require("../validation/userValidation");
+const Foreigner = require("../models/foreignerM");
+const { foreigner_validation } = require("../validation/foriegnerValidation");
 
 let userI = 0;
 
 // creating a new user in the DB
 const userAdd = async (req, res) => {
 	// validating inputs whether they are empty
-	const { error } = user_validation(req.body);
+	const { error } = foreigner_validation(req.body);
 
 	// if error occurred display the error msg
 	if (error) {
 		return res.send({ message: error["details"][0]["message"] });
 	} else {
 		// checking whether the user already exist or not
-		const EmailExist = await User.findOne({ email: req.body.email });
+		const EmailExist = await Foreigner.findOne({ email: req.body.email });
 
-		const NICExist = await User.findOne({ number: req.body.number });
+		const NICExist = await Foreigner.findOne({ number: req.body.number });
 
-		const UsernameExist = await User.findOne({
+		const UsernameExist = await Foreigner.findOne({
 			username: req.body.username,
 		});
 
 		// taking the last document of the mongo User collection
-		const last = await User.find().sort({ _id: -1 });
+		const last = await Foreigner.find().sort({ _id: -1 });
 
 		// checking whether the array is not empty
 		if (!(last.length === 0)) {
@@ -48,7 +48,7 @@ const userAdd = async (req, res) => {
 				process.env.PASS_SECRET,
 			).toString();
 
-			const user = new User({
+			const user = new Foreigner({
 				userID: "U0" + (userI + 1),
 				name: req.body.name,
 				email: req.body.email,
@@ -75,7 +75,7 @@ const userAdd = async (req, res) => {
 
 const retrieveAllUsers = async (req, res) => {
 	try {
-		const users = await User.find();
+		const users = await Foreigner.find();
 		return res.status(200).send({ users });
 	} catch (error) {
 		return res.status(400).send({ message: error });
@@ -84,7 +84,7 @@ const retrieveAllUsers = async (req, res) => {
 
 const getOneUser = async (req, res) => {
 	try {
-		const user = await User.findOne({ _id: req.params.id });
+		const user = await Foreigner.findOne({ _id: req.params.id });
 
 		if (!user) {
 			return res.status(404).send({ message: "User Not Found!" });
@@ -98,11 +98,11 @@ const getOneUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
 	try {
-		const user = await User.findById(req.params.id);
+		const user = await Foreigner.findById(req.params.id);
 		if (!user) {
 			return res.status(404).send({ message: "User Not Found!" });
 		} else {
-			const deletedUser = await User.findByIdAndDelete(
+			const deletedUser = await Foreigner.findByIdAndDelete(
 				req.params.id,
 			);
 
@@ -120,7 +120,7 @@ const deleteUser = async (req, res) => {
 const updateUser = async (req, res) => {
 	const paramsID = req.params.id;
 	try {
-		const user = await User.findById(paramsID);
+		const user = await Foreigner.findById(paramsID);
 		if (!user) {
 			return res.status(404).send({ message: "User Not Found!" });
 		} else {
@@ -135,7 +135,7 @@ const updateUser = async (req, res) => {
 				type,
 			} = req.body;
 
-			const updatedUser = await User.findByIdAndUpdate(paramsID, {
+			const updatedUser = await Foreigner.findByIdAndUpdate(paramsID, {
 				name,
 				email,
 				nicType,
