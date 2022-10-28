@@ -5,6 +5,8 @@ const user_validation = (data) => {
         userID: Joi.string.required(),
         name: Joi.string.required(),
         email: Joi.string.required(),
+        nicType: Joi.string.required(),
+        number: Joi.string.required(),
         phoneNumber: Joi.string.required(),
         username: Joi.string.required(),
         password: Joi.string.required(),
