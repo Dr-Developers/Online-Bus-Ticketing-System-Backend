@@ -2,7 +2,6 @@ const Joi = require("joi");
 
 const payment_validation = (data) => {
     const schema_validation = Joi.object({
-        paymentID: Joi.string().required(),
         amount: Joi.number().integer().required(),
         email: Joi.string().required(),
         method: Joi.string().required(),
