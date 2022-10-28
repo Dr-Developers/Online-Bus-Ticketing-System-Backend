@@ -64,7 +64,7 @@ const userAdd = async (req, res) => {
 				const savedUser = user.save();
 				console.log("========================");
 				console.log("User Saved Successfully!");
-				console.log("========================\n");
+				console.log("========================");
 				return res.status(200).send({ savedUser: user });
 			} catch (error) {
 				return res.status(400).send({ message: error });
@@ -108,7 +108,7 @@ const deleteUser = async (req, res) => {
 
 			console.log("==========================");
 			console.log("User Deleted Successfully!");
-			console.log("==========================\n");
+			console.log("==========================");
 
 			return res.status(200).send({ deletedUser });
 		}
@@ -148,7 +148,7 @@ const updateUser = async (req, res) => {
 
 			console.log("==========================");
 			console.log("User Updated Successfully!");
-			console.log("==========================\n");
+			console.log("==========================");
 
 			return res.status(200).send({ updatedUser });
 		}
