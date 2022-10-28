@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const {
-    addBusRoutes,
-    getBusRoutes,
-    updateBusRoutes,
-    deleteBusRoutes,
-    getoneBusRoutes,
+	addBusRoutes,
+	getBusRoutes,
+	updateBusRoutes,
+	deleteBusRoutes,
+	getoneBusRoutes,
 } = require("../controller/busRoutC");
 const Event = require("../models/busRoutesM");
 
