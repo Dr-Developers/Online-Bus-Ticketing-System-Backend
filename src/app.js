@@ -9,6 +9,7 @@ const paymentRoute = require("./api/routes/paymentR");
 const busRoutesRoute = require("./api/routes/busRoutsR");
 const authRoutes = require("./api/routes/authR");
 const foreignerRoute = require("./api/routes/foreignerR");
+const inspectionRoute = require("./api/routes/inspectionR");
 
 const app = express();
 dotenv.config();
@@ -32,6 +33,7 @@ app.use("/api/payment", paymentRoute);
 app.use("/api/busroutes", busRoutesRoute);
 app.use("/api", authRoutes);
 app.use("/api/foreigner", foreignerRoute);
+app.use("/api/inspection", inspectionRoute);
 
 // Creating the port connection of the Backend Server
 app.listen(process.env.PORT || 5000, () => {
