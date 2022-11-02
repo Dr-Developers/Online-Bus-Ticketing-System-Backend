@@ -68,6 +68,7 @@ const userAdd = async (req, res) => {
 				return res.status(200).send({ savedUser: user });
 			} catch (error) {
 				return res.status(400).send({ message: error });
+				console.log("Error");
 			}
 		}
 	}
