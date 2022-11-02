@@ -3,24 +3,13 @@ const { busRoutes_validation } = require("../validation/busRoutesValidation");
 
 //add Bus Route function
 const addBusRoutes = async (req, res) => {
-	//const validate = localStorage.getItem("isAdmin");
 
-	//if (validate === "true") {
 		//validate the Bus Route input fields
 		const { error } = busRoutes_validation(req.body.data);
 		if (error) {
 			res.send({ message: error["details"][0]["message"] });
 		}
 
-		// //to check Bus Route already exist
-		// const busRoutesExist = await BusRoutes.findOne({
-		// 	busRoutesId: req.body.busRoutesId,
-		// });
-		// if (busRoutesExist) {
-		// 	return res
-		// 		.status(400)
-		// 		.send({ message: "Bus Route already exist" });
-		// }
 
 		//assign data to the model
 		const busRoutes = new BusRoutes({
@@ -31,7 +20,6 @@ const addBusRoutes = async (req, res) => {
 			date: req.body.date,
 			startLocation: req.body.startLocation,
             EndLocation: req.body.EndLocation,
-            vType: req.body.vType,
 		});
 
 		try {
@@ -42,11 +30,7 @@ const addBusRoutes = async (req, res) => {
 			//error handling
 			res.status(400).send({ message: error });
 		}
-	// } else {
-	// 	return res
-	// 		.status(403)
-	// 		.json("You do not have permission to access this");
-	// }
+
 };
 
 const getBusRoutes = async (req, res) => {
@@ -59,9 +43,7 @@ const getBusRoutes = async (req, res) => {
 };
 
 const updateBusRoutes = async (req, res) => {
-	//const validate = localStorage.getItem("isAdmin");
 
-	//if (validate == "true") {
 		const busRoutesId = req.params.id;
 
 		try {
@@ -78,7 +60,7 @@ const updateBusRoutes = async (req, res) => {
 				date,
 				startLocation,
                 EndLocation,
-                vType,
+                
 			} = req.body;
 			const updateBusRoutes = await BusRoutes.findByIdAndUpdate(
 				busRoutesId,
@@ -90,7 +72,7 @@ const updateBusRoutes = async (req, res) => {
 					date,
 					startLocation,
                     EndLocation,
-                    vType,
+                
 				},
 			);
 
@@ -98,17 +80,11 @@ const updateBusRoutes = async (req, res) => {
 		} catch (err) {
 			res.status(400).send({ message: err });
 		}
-	// } else {
-	// 	return res
-	// 		.status(403)
-	// 		.json("You do not have permission to access this");
-	// }
+
 };
 
 const deleteBusRoutes = async (req, res) => {
-	//const validate = localStorage.getItem("isAdmin");
 
-	//if (validate === "true") {
 		const busRoutesId = req.params.id;
 
 		try {
@@ -123,11 +99,7 @@ const deleteBusRoutes = async (req, res) => {
 		} catch (err) {
 			res.status(400).json(err.message);
 		}
-	// } else {
-	// 	return res
-	// 		.status(403)
-	// 		.json("You do not have permission to access this");
-	// }
+
 };
 
 const getoneBusRoutes = async (req, res) => {

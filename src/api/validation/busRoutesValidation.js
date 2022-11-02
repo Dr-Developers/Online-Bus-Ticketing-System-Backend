@@ -9,7 +9,6 @@ const busRoutes_validation = (data) => {
         date: Joi.string().required(),
         startLocation: Joi.string().required(),
         EndLocation: Joi.string().required(),
-        vType: Joi.string().required(),
     });
 
     return schema_validation.validate(data);
