@@ -61,45 +61,49 @@ const login = async (req, res, next) => {
 					process.env.TOKEN_SECRET,
 				);
 
-				res.header("authToken", token).send({
+				return res.header("authToken", token).send({
 					authToken: token,
 					role: "passenger",
 					roleData: userExist,
 				});
 			} catch (error) {
-				res.status(400).send({ message: error });
+				return res.status(400).send({ message: error });
 			}
 		} else if (ForeignerExist) {
-			console.log("=====================");
-			console.log("Logged as a Foreigner");
-			console.log("=====================");
-			localStorage.setItem("Foreigner", true);
-
-			// decrypting the password
-			const decryptedPassword = CryptoJS.AES.decrypt(
-				ForeignerExist.password,
-				process.env.PASS_SECRET,
-			).toString(CryptoJS.enc.Utf8);
-
-			// password validation
-			if (req.body.password !== decryptedPassword) {
-				res.status(400).send({ message: "Wrong password" });
-			}
-
-			// generate json web tokens
 			try {
-				const token = await jwt.sign(
-					{ _id: ForeignerExist.id },
-					process.env.TOKEN_SECRET,
-				);
+				console.log("=====================");
+				console.log("Logged as a Foreigner");
+				console.log("=====================");
+				localStorage.setItem("Foreigner", true);
 
-				res.header("authToken", token).send({
-					authToken: token,
-					role: "foreigner",
-					roleData: ForeignerExist,
-				});
-			} catch (error) {
-				res.status(400).send({ message: error });
+				// decrypting the password
+				const decryptedPassword = CryptoJS.AES.decrypt(
+					ForeignerExist.password,
+					process.env.PASS_SECRET,
+				).toString(CryptoJS.enc.Utf8);
+
+				// password validation
+				if (req.body.password !== decryptedPassword) {
+					res.status(400).send({ message: "Wrong password" });
+				}
+
+				// generate json web tokens
+				try {
+					const token = await jwt.sign(
+						{ _id: ForeignerExist.id },
+						process.env.TOKEN_SECRET,
+					);
+
+					return res.header("authToken", token).send({
+						authToken: token,
+						role: "foreigner",
+						roleData: ForeignerExist,
+					});
+				} catch (error) {
+					return res.status(400).send({ message: error });
+				}
+			} catch (e) {
+				console.log("Error: ", e);
 			}
 		}
 	}
