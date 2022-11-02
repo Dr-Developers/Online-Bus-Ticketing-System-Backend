@@ -56,27 +56,28 @@ const updateInspection = async (req, res) => {
 			if (!inspection) {
 				res.status(404).json("No inspection Found");
 			}
+            console.log(inspectionId)
 
 			const {
 				inspectionID,
 				routeId,
 				time,
-				date,
+				
 				inspectorName,
 				enquiries,
 			} = req.body;
 			const updateInspection = await Inspection.findByIdAndUpdate(
 				inspectionId,
 				{
-					inspectionID,
-					routeId,
-					time,
-					date,
-					inspectorName,
-					enquiries,
+                    inspectionID,
+                    routeId,
+                    time,
+                    
+                    inspectorName,
+                    enquiries,
 				},
 			);
-
+console.log("updated", updateInspection)
 			res.status(200).json(updateInspection);
 		} catch (err) {
 			res.status(400).send({ message: err });
