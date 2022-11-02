@@ -5,7 +5,7 @@ const inspection_validation = (data) => {
         inspectionId: Joi.string(),
         routeId: Joi.string().required(),
         time: Joi.string().required(),
-        date: Joi.string().required(),
+        date: Joi.string(),
         inspectorName: Joi.string().required(),
         enquiries: Joi.string().required(),
     });
