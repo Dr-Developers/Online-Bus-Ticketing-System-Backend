@@ -48,6 +48,7 @@ const updateBusRoutes = async (req, res) => {
 	//if (validate == "true") {
 		const busRoutesId = req.params.id;
 
+		
 		try {
 			const busRoutes = await BusRoutes.findById(busRoutesId);
 			if (!busRoutes) {

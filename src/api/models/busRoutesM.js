@@ -14,4 +14,5 @@ const busRoutesSchema = new mongoose.Schema({
     { timestamps: true },
 );
 
+
 module.exports = mongoose.model("BusRoutes", busRoutesSchema);
