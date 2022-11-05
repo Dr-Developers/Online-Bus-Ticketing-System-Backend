@@ -1,21 +1,25 @@
 const BusRoutes = require("../models/busRoutesM");
 const { busRoutes_validation } = require("../validation/busRoutesValidation");
 
-let Id = 1;
+let timetableI = 0;
 //add Bus Route function
 const addBusRoutes = async (req, res) => {
-	
-		const { error } = busRoutes_validation(req.body);
-
 		//validate the Bus Route input fields
-		const { error } = busRoutes_validation(req.body.data);
+		const { error } = busRoutes_validation(req.body);
 		if (error) {
 			return res.send({ message: error["details"][0]["message"] });
 		}
 
+		const last = await BusRoutes.find().sort({ _id: -1 });
+
+	// checking whether the array is not empty
+	if (!(last.length === 0)) {
+		// console.log("Last: ", parseInt(last[0].userID.split("0")[1]));
+		timetableI = parseInt(last[0].timetableID.split("0")[1]);
+	}
 		//assign data to the model
 		const busRoutes = new BusRoutes({
-			timetableID: `I00${Id}`,
+			timetableID: "T0" + (timetableI + 1),
 			vehicleNo: req.body.vehicleNo,
 			routeId: req.body.routeId,
 			time: req.body.time,
@@ -29,7 +33,7 @@ const addBusRoutes = async (req, res) => {
 			//save the data in the database
 			const savedBusRoutes = await busRoutes.save();
 			return res.send(savedBusRoutes);
-			Id += 1;
+			
 		} catch (error) {
 			//error handling
 			return res.status(400).send({ message: error });
@@ -89,10 +93,6 @@ const updateBusRoutes = async (req, res) => {
 };
 
 const deleteBusRoutes = async (req, res) => {
-	
-};
-
-const deleteBusRoutes = async (req, res) => {
 
 		const busRoutesId = req.params.id;
 
@@ -103,7 +103,7 @@ const deleteBusRoutes = async (req, res) => {
 				res.status(404).json("Bus Routes Not Found");
 			}
 
-			const deletedBusRoutes = await BusRoutes.findByIdAndDelete(timetableID);
+			const deletedBusRoutes = await BusRoutes.findByIdAndDelete(busRoutesId);
 			res.status(200).json(deletedBusRoutes);
 		} catch (err) {
 			res.status(400).json(err.message);
