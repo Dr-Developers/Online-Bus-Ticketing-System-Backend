@@ -6,6 +6,9 @@ let Id = 1;
 const addBusRoutes = async (req, res) => {
 	
 		const { error } = busRoutes_validation(req.body);
+
+		//validate the Bus Route input fields
+		const { error } = busRoutes_validation(req.body.data);
 		if (error) {
 			return res.send({ message: error["details"][0]["message"] });
 		}
@@ -19,7 +22,7 @@ const addBusRoutes = async (req, res) => {
 			date: req.body.date,
 			startLocation: req.body.startLocation,
             EndLocation: req.body.EndLocation,
-            
+
 		});
 
 		try {
@@ -43,9 +46,7 @@ const getBusRoutes = async (req, res) => {
 };
 
 const updateBusRoutes = async (req, res) => {
-	//const validate = localStorage.getItem("isAdmin");
 
-	//if (validate == "true") {
 		const busRoutesId = req.params.id;
 
 		
@@ -64,7 +65,7 @@ const updateBusRoutes = async (req, res) => {
 				// date,
 				startLocation,
                 EndLocation,
-            
+
 			} = req.body;
 			const updateBusRoutes = await BusRoutes.findByIdAndUpdate(
 				busRoutesId,
@@ -76,7 +77,7 @@ const updateBusRoutes = async (req, res) => {
 					// date,
 					startLocation,
                     EndLocation,
-                    
+
 				},
 			);
 			console.log("updated", updateBusRoutes)
@@ -89,8 +90,10 @@ const updateBusRoutes = async (req, res) => {
 
 const deleteBusRoutes = async (req, res) => {
 	
+};
 
-	//if (validate === "true") {
+const deleteBusRoutes = async (req, res) => {
+
 		const busRoutesId = req.params.id;
 
 		try {
@@ -105,11 +108,7 @@ const deleteBusRoutes = async (req, res) => {
 		} catch (err) {
 			res.status(400).json(err.message);
 		}
-	// } else {
-	// 	return res
-	// 		.status(403)
-	// 		.json("You do not have permission to access this");
-	// }
+
 };
 
 const getoneBusRoutes = async (req, res) => {

@@ -8,7 +8,6 @@ const busRoutesSchema = new mongoose.Schema({
         date: { type: String, required: true },
         startLocation: { type: String, required: true },
         EndLocation: { type: String, required: true },
-        
     },
 
     { timestamps: true },
