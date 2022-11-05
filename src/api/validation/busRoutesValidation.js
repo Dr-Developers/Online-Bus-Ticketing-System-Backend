@@ -14,4 +14,5 @@ const busRoutes_validation = (data) => {
     return schema_validation.validate(data);
 };
 
+
 module.exports.busRoutes_validation = busRoutes_validation;

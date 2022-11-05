@@ -1,44 +1,47 @@
 const BusRoutes = require("../models/busRoutesM");
 const { busRoutes_validation } = require("../validation/busRoutesValidation");
 
+let Id = 1;
 //add Bus Route function
 const addBusRoutes = async (req, res) => {
+	
+		const { error } = busRoutes_validation(req.body);
 
 		//validate the Bus Route input fields
 		const { error } = busRoutes_validation(req.body.data);
 		if (error) {
-			res.send({ message: error["details"][0]["message"] });
+			return res.send({ message: error["details"][0]["message"] });
 		}
-
 
 		//assign data to the model
 		const busRoutes = new BusRoutes({
-			timetableID: req.body.timetableID,
+			timetableID: `I00${Id}`,
 			vehicleNo: req.body.vehicleNo,
 			routeId: req.body.routeId,
 			time: req.body.time,
 			date: req.body.date,
 			startLocation: req.body.startLocation,
             EndLocation: req.body.EndLocation,
+
 		});
 
 		try {
 			//save the data in the database
 			const savedBusRoutes = await busRoutes.save();
-			res.send(savedBusRoutes);
+			return res.send(savedBusRoutes);
+			Id += 1;
 		} catch (error) {
 			//error handling
-			res.status(400).send({ message: error });
+			return res.status(400).send({ message: error });
 		}
-
 };
 
 const getBusRoutes = async (req, res) => {
 	try {
 		const busRoutes = await BusRoutes.find();
-		res.send(busRoutes);
+		return res.send(busRoutes);
 	} catch (error) {
-		res.status(400).send({ message: error });
+		return res.status(400).send({ message: error });
 	}
 };
 
@@ -46,21 +49,23 @@ const updateBusRoutes = async (req, res) => {
 
 		const busRoutesId = req.params.id;
 
+		
 		try {
 			const busRoutes = await BusRoutes.findById(busRoutesId);
 			if (!busRoutes) {
-				res.status(404).json("No Bus Routes Found");
+				return res.status(404).json("No Bus Routes Found");
 			}
+			console.log(timetableID)
 
 			const {
 				timetableID,
 				vehicleNo,
 				routeId,
 				time,
-				date,
+				// date,
 				startLocation,
                 EndLocation,
-                
+
 			} = req.body;
 			const updateBusRoutes = await BusRoutes.findByIdAndUpdate(
 				busRoutesId,
@@ -69,18 +74,22 @@ const updateBusRoutes = async (req, res) => {
 					vehicleNo,
 					routeId,
 					time,
-					date,
+					// date,
 					startLocation,
                     EndLocation,
-                
+
 				},
 			);
-
-			res.status(200).json(updateBusRoutes);
+			console.log("updated", updateBusRoutes)
+			return res.status(200).json(updateBusRoutes);
 		} catch (err) {
-			res.status(400).send({ message: err });
+			return res.status(400).send({ message: err });
 		}
+	
+};
 
+const deleteBusRoutes = async (req, res) => {
+	
 };
 
 const deleteBusRoutes = async (req, res) => {
@@ -94,7 +103,7 @@ const deleteBusRoutes = async (req, res) => {
 				res.status(404).json("Bus Routes Not Found");
 			}
 
-			const deletedBusRoutes = await BusRoutes.findByIdAndDelete(busRoutesId);
+			const deletedBusRoutes = await BusRoutes.findByIdAndDelete(timetableID);
 			res.status(200).json(deletedBusRoutes);
 		} catch (err) {
 			res.status(400).json(err.message);
