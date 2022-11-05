@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 const busRoutes_validation = (data) => {
     const schema_validation = Joi.object({
-        timetableID: Joi.string().required(),
+        timetableID: Joi.string(),
         vehicleNo: Joi.string().required(),
         routeId: Joi.string().required(),
         time: Joi.string().required(),
