@@ -1,36 +1,43 @@
 const Inspection = require("../models/inspectionM");
-const { inspection_validation } = require("../validation/inspectionValidation");
+const {
+	inspection_validation,
+} = require("../validation/inspectionValidation");
 
-
-let Id = 1;
+let inspectionI = 0;
 
 //add inspection function
 const addInspection = async (req, res) => {
+	const { error } = inspection_validation(req.body);
+	if (error) {
+		return res.send({ message: error["details"][0]["message"] });
+	}
 
-		const { error } = inspection_validation(req.body);
-		if (error) {
-			res.send({ message: error["details"][0]["message"] });
-		}
+	const last = await Inspection.find().sort({ _id: -1 });
 
-		//assign data to the model
-		const inspection = new Inspection({
-			inspectionId: `I00${Id}`,
-			routeId: req.body.routeId,
-			time: req.body.time,
-			date: req.body.date,
-			inspectorName: req.body.inspectorName,
-			enquiries: req.body.enquiries,
-		});
+	// checking whether the array is not empty
+	if (!(last.length === 0)) {
+		// console.log("Last: ", parseInt(last[0].userID.split("0")[1]));
+		inspectionI = parseInt(last[0].inspectionId.split("0")[1]);
+	}
 
-		try {
-			//save the data in the database
-			const savedInspection = await inspection.save();
-			res.send(savedInspection);
-            Id += 1;
-		} catch (error) {
-			//error handling
-			res.status(400).send({ message: error });
-		}
+	//assign data to the model
+	const inspection = new Inspection({
+		inspectionId: "I0" + (inspectionI + 1),
+		routeId: req.body.routeId,
+		time: req.body.time,
+		date: req.body.date,
+		inspectorName: req.body.inspectorName,
+		enquiries: req.body.enquiries,
+	});
+
+	try {
+		//save the data in the database
+		const savedInspection = await inspection.save();
+		return res.send(savedInspection);
+	} catch (error) {
+		//error handling
+		return res.status(400).send({ message: error });
+	}
 	// } else {
 	// 	return res
 	// 		.status(403)
@@ -48,65 +55,65 @@ const getInspection = async (req, res) => {
 };
 
 const updateInspection = async (req, res) => {
+	const inspectionId = req.params.id;
 
- 	const inspectionId = req.params.id;
+	try {
+		const inspection = await Inspection.findById(inspectionId);
+		if (!inspection) {
+			res.status(404).json("No inspection Found");
+		}
+		console.log(inspectionId);
 
-		try {
-			const inspection = await Inspection.findById(inspectionId);
-			if (!inspection) {
-				res.status(404).json("No inspection Found");
-			}
-            console.log(inspectionId)
+		const {
+			inspectionID,
+			routeId,
+			time,
 
-			const {
+			inspectorName,
+			enquiries,
+		} = req.body;
+		const updateInspection = await Inspection.findByIdAndUpdate(
+			inspectionId,
+			{
 				inspectionID,
 				routeId,
 				time,
-				
+
 				inspectorName,
 				enquiries,
-			} = req.body;
-			const updateInspection = await Inspection.findByIdAndUpdate(
-				inspectionId,
-				{
-                    inspectionID,
-                    routeId,
-                    time,
-                    
-                    inspectorName,
-                    enquiries,
-				},
-			);
-console.log("updated", updateInspection)
-			res.status(200).json(updateInspection);
-		} catch (err) {
-			res.status(400).send({ message: err });
-		}
-
+			},
+		);
+		console.log("updated", updateInspection);
+		res.status(200).json(updateInspection);
+	} catch (err) {
+		res.status(400).send({ message: err });
+	}
 };
 
 const deleteInspection = async (req, res) => {
+	const inspectionId = req.params.id;
 
-		const inspectionId = req.params.id;
+	try {
+		const inspection = await Inspection.findById(inspectionId);
 
-		try {
-			const inspection = await Inspection.findById(inspectionId);
-
-			if (!inspection) {
-				res.status(404).json("inspection Not Found");
-			}
-
-			const deletedInspection = await Inspection.findByIdAndDelete(inspectionId);
-			res.status(200).json(deletedInspection);
-		} catch (err) {
-			res.status(400).json(err.message);
+		if (!inspection) {
+			res.status(404).json("inspection Not Found");
 		}
 
+		const deletedInspection = await Inspection.findByIdAndDelete(
+			inspectionId,
+		);
+		res.status(200).json(deletedInspection);
+	} catch (err) {
+		res.status(400).json(err.message);
+	}
 };
 
 const getoneInspection = async (req, res) => {
 	try {
-		const inspection = await Inspection.findOne({ _id: req.params.id });
+		const inspection = await Inspection.findOne({
+			_id: req.params.id,
+		});
 
 		if (!inspection) {
 			res.status(404).json("inspection Not Found");
